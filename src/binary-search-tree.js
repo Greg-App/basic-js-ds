@@ -92,7 +92,75 @@ class BinarySearchTree {
   }
 
   remove(data) {
-    
+    if (this.rootT !== null) {
+      let current = this.find(data);
+      if (current === this.rootT) {
+        this.prev = current;
+        if (!current.left && !current.right) {
+          this.rootT = null;
+        } else if (current.left && !current.right) {
+          this.rootT = current.left;
+        } else if (!current.left && current.right) {
+          this.rootT = current.right;
+        } else { //has both children
+          /* this.rootT = current.left;
+          let right = current.right ? current.right : null;
+          current = current.left;
+          while (current.right) {
+            current = current.right;
+          }
+          current.right = right; */
+          this.rootT = current.right;
+          let left = current.left ? current.left : null;
+          current = current.right;
+          while (current.left) {
+            current = current.left;
+          }
+          current.left = left;
+        }
+      } else {
+        if (current !== null) {
+          if (!current.left && !current.right) {
+            if (this.prev&&this.prev.right === current) {
+              this.prev.right = null;
+            } else {
+              if(this.prev) {this.prev.left = null;}
+            }
+          } else if (current.left && !current.right) {
+            if (this.prev&&this.prev.right === current) {
+              this.prev.right = current.left;
+            } else {
+              if(this.prev){this.prev.left = current.left;}
+            }
+          } else if (!current.left && current.right) {
+            if (this.prev&&this.prev.right === current) {
+              this.prev.right = current.right;
+            } else {
+              if(this.prev) {this.prev.left = current.right;}
+            }
+          } else { //has both children
+
+            if (this.prev&&this.prev.right === current) {
+              this.prev.right = current.left;
+              let right = current.right ? current.right : null;
+              current = current.left;
+              while (current.right) {
+                current = current.right;
+              }
+              current.right = right;
+            } else {
+              if(this.prev){this.prev.left = current.right;}
+              let left = current.left;
+              current = current.right;
+              while (current.left) {
+                current = current.left;
+              }
+              current.left = left;
+            }
+          }
+        }
+      }
+    }
   }
 
   min() {
